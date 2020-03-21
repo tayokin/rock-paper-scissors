@@ -1,7 +1,7 @@
 FROM php:7.4-fpm-alpine3.10
 
-ARG USERID=1000
-ARG GROUPID=1000
+ARG USERID=${USERID}
+ARG GROUPID=${GROUPID}
 
 RUN apk add --no-cache git shadow mysql-client \
         php7-mysqlnd php7-pdo_mysql php7-gd php7-mbstring php7-intl \
