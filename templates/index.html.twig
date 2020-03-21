@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бумага-ножницы-камень</title>
+</head>
+<body>
+<h1>Game results</h1>
+<h4>Results</h4>
+<div>{{ winnerName(constant('App\\DTO\\GAME::RESULT_PLAYER_ONE_WINS')) }} wins {{ results.playerOneWinsCount }} times</div>
+<div>{{ winnerName(constant('App\\DTO\\GAME::RESULT_PLAYER_TWO_WINS')) }} wins {{ results.playerTwoWinsCount }} times</div>
+<div>{{ winnerName(constant('App\\DTO\\GAME::RESULT_DRAW')) }} fixed {{ results.drawCount }} times</div>
+<table>
+    <thead>
+    <tr>
+        <td>{{ winnerName(constant('App\\DTO\\GAME::RESULT_PLAYER_ONE_WINS')) }}</td>
+        <td>{{ winnerName(constant('App\\DTO\\GAME::RESULT_PLAYER_TWO_WINS')) }}</td>
+        <td>winner</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for game in results.games %}
+        <tr>
+            <td>{{ game.playerOneChoice }}</td>
+            <td>{{ game.playerTwoChoice }}</td>
+            <td>{{ winnerName(game.winner) }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
