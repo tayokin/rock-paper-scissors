@@ -4,17 +4,15 @@ services:
 
     rock-paper-scissors-nginx:
         container_name: rock-paper-scissors-nginx
-        build:
-          context: ./nginx
-          dockerfile: Dockerfile
+        build: docker/nginx
+        working_dir: /app
         entrypoint:
             - /usr/sbin/nginx
             - -g
             - daemon off;
-        working_dir: /app
         volumes:
-            - ../:/app
-            - ./nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./:/app
+            - ./docker/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
         ports:
             - 8888:443
         links:
@@ -23,19 +21,22 @@ services:
     rock-paper-scissors-php-fpm:
         container_name: rock-paper-scissors-php-fpm
         build:
-            context: ./php-fpm
-            dockerfile: Dockerfile
-        environment:
-            PHP_IDE_CONFIG: "serverName=docker"
-        env_file: ../.env
+            context: ./
+            dockerfile: ./docker/php-fpm/Dockerfile
+            args:
+                GROUPID: 1000
+                USERID: 1000
         working_dir: /app
         volumes:
-            - ../:/app
-            - ./php-fpm/php-ini-override/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./:/app
+            - ./docker/php-fpm/php-ini-override/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        environment:
+            PHP_IDE_CONFIG: "serverName=docker"
+        env_file: .env
 
 
 networks:
-    internal:
+    default:
         driver: bridge
         ipam:
             driver: default

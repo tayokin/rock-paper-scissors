@@ -1,6 +1,9 @@
 FROM php:7.4-fpm-alpine3.10
 
-RUN apk add --no-cache git mysql-client \
+ARG USERID=1000
+ARG GROUPID=1000
+
+RUN apk add --no-cache git shadow mysql-client \
         php7-mysqlnd php7-pdo_mysql php7-gd php7-mbstring php7-intl \
         php7-xsl php7-zip php7-curl zip unzip \
         # @todo remove before end
@@ -18,6 +21,24 @@ RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
+RUN usermod -u ${USERID} www-data \
+    && groupmod -g ${GROUPID} www-data \
+    && mkdir /app \
+    && chown www-data:www-data /app \
+    && chown www-data:www-data /run
+
+WORKDIR "/app"
 USER www-data
+
+COPY ./*.json ./*.lock /app/
+RUN composer check-platform-reqs \
+    && composer install \
+        --prefer-dist \
+        --no-scripts \
+        --optimize-autoloader \
+        --no-interaction \
+        --no-dev \
+    && composer clear-cache
+COPY ./ /app/
 
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
