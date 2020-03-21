@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+
+    rock-paper-scissors-nginx:
+        container_name: rock-paper-scissors-nginx
+        build:
+          context: ./nginx
+          dockerfile: Dockerfile
+        entrypoint:
+            - /usr/sbin/nginx
+            - -g
+            - daemon off;
+        working_dir: /app
+        volumes:
+            - ../:/app
+            - ./nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - 8888:443
+        links:
+            - rock-paper-scissors-php-fpm
+
+    rock-paper-scissors-php-fpm:
+        container_name: rock-paper-scissors-php-fpm
+        build:
+            context: ./php-fpm
+            dockerfile: Dockerfile
+        environment:
+            PHP_IDE_CONFIG: "serverName=docker"
+        env_file: ../.env
+        working_dir: /app
+        volumes:
+            - ../:/app
+            - ./php-fpm/php-ini-override/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+
+
+networks:
+    internal:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: "172.18.0.0/16"
