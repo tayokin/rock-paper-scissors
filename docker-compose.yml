@@ -24,8 +24,8 @@ services:
             context: ./
             dockerfile: ./docker/php-fpm/Dockerfile
             args:
-                GROUPID: 1000
-                USERID: 1000
+                GROUPID: ${GROUPID}
+                USERID: ${USERID}
         working_dir: /app
         volumes:
             - ./:/app
