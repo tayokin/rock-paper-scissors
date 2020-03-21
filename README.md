@@ -1,7 +1,44 @@
-run docker-compose up -d --build
+# Installation steps
+## Clone repository
+```bash
+git clone git@github.com:tayokin/rock-paper-scissors.git
+```
+## Setup env file
+```bash
+cp .env .env.local
+```
+### Set your user and group id into .env file
+#### Check your user and group id
+```bash
+id
+```
+For example, if result of your "id" command starts from: uid=1000(admin) gid=1000(admin) you set user and group in .env.local file to:
+ 
+```bash
+ USERID=1000
+ GROUPID=1000
+```
+## Run on Docker
+```bash
+docker-compose up -d --build
+```
+Everything is done
 
+# Open link in your browser:
 https://127.0.0.1:8888/
 
+# Run Unit tests
+## Enter into php-fpm docker container
+```bash
+docker-compose exec rock-paper-scissors-php-fpm ash
+```
+## Run tests
+```bash
+php bin/phpunit --colors=never --coverage-text
+```
+
+#Task text 
+```
 Задача: Бумага-ножницы-камень
 Описание:
 Создайте игру, в которой два игрока с разными стратегиями играют друг против друга.
@@ -21,3 +58,4 @@ https://127.0.0.1:8888/
 Вы можете использовать любую IDE и создавать инструменты по вашему выбору.
 Пожалуйста, объясните свой выбор.
 Так же необходима инструкция по запуску приложения.
+```

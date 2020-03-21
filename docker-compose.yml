@@ -29,16 +29,15 @@ services:
         working_dir: /app
         volumes:
             - ./:/app
-            - ./docker/php-fpm/php-ini-override/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
         environment:
             PHP_IDE_CONFIG: "serverName=docker"
         env_file: .env.local
 
 
-networks:
-    default:
-        driver: bridge
-        ipam:
-            driver: default
-            config:
-                - subnet: "172.18.0.0/16"
+#networks:
+#    default:
+#        driver: bridge
+#        ipam:
+#            driver: default
+#            config:
+#                - subnet: "172.18.0.0/16"
