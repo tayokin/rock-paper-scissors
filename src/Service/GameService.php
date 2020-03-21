@@ -29,17 +29,7 @@ class GameService
             ->setWinner($this->getWinner($playerOneChoice, $playerTwoChoice));
     }
 
-    private function getPlayerOneChoice(): string
-    {
-        return self::CHOICE_PAPER;
-    }
-
-    private function getPlayerTwoChoice(): string
-    {
-        return array_rand($this->choiceMapping);
-    }
-
-    private function getWinner(string $playerOneChoice, string $playerTwoChoice): int
+    public function getWinner(string $playerOneChoice, string $playerTwoChoice): int
     {
         if ($playerOneChoice === $playerTwoChoice) {
             return Game::RESULT_DRAW;
@@ -48,5 +38,15 @@ class GameService
         return $this->choiceMapping[$playerOneChoice] === $playerTwoChoice
             ? Game::RESULT_PLAYER_ONE_WINS
             : Game::RESULT_PLAYER_TWO_WINS;
+    }
+
+    private function getPlayerOneChoice(): string
+    {
+        return self::CHOICE_PAPER;
+    }
+
+    private function getPlayerTwoChoice(): string
+    {
+        return array_rand($this->choiceMapping);
     }
 }

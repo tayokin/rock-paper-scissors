@@ -32,7 +32,7 @@ services:
             - ./docker/php-fpm/php-ini-override/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
         environment:
             PHP_IDE_CONFIG: "serverName=docker"
-        env_file: .env
+        env_file: .env.local
 
 
 networks:
